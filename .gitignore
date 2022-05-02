@@ -1,5 +1,7 @@
 /resources/
-/opengl/licenta/Release
-/opengl/licenta/Debug
-/opengl/licenta/licenta/Release
-/opengl/licenta/licenta/Debug
+/opengl/licenta/Release/
+/opengl/licenta/Debug/
+/opengl/licenta/licenta/Release/
+/opengl/licenta/licenta/Debug/
+/opengl/licenta/.vs/
+/opengl/licenta/licenta/pixels.txt
