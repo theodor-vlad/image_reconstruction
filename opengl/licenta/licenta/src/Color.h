@@ -4,8 +4,9 @@
 #include "utils.h"
 
 struct Color {
-	GLfloat r, g, b;
+	GLfloat r, g, b, a;
 	Color() {
 		std::tie(r, g, b) = std::make_tuple(rnd2, rnd2, rnd2);
+		a = rnd2 * 0.35 + 0.15;
 	}
 };
