@@ -13,14 +13,12 @@ struct Chromosome {
 
 	Chromosome(unsigned int n) {
 		for (unsigned int i = 0; i < n; i++) {
-			polygons.push_back(Polygon(3));
+			polygons.push_back(Polygon(POINT_MIN));
 		}
 	}
 
-private:
 	void draw();
 
-public:
 	void calculate_fitness();
 
 	void mutate() {
@@ -37,7 +35,7 @@ public:
 
 			// replace polygon altogether
 			if (rnd2 < PROB_REPLACE_POLY) {
-				poly = Polygon(3);
+				poly = Polygon(POINT_MIN);
 			}
 
 			// add point

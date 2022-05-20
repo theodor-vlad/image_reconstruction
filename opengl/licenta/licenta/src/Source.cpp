@@ -61,22 +61,6 @@ void Chromosome::calculate_fitness() {
     }
     fitness = pow(fit, -2);
 
-    /*threads.clear();
-    partial_fitnesses.clear();
-    for (int i = 0; i < num_of_threads; i++) {
-        threads.push_back(std::thread(calculate_fitness_parallel, i * thread_chunk_size * DIMENSIONS));
-    }
-
-    for (int i = 0; i < num_of_threads; i++) {
-        if (threads[i].joinable())
-            threads[i].join();
-    }
-
-    fitness = 0.0;
-    for (int i = 0; i < num_of_threads; i++) {
-        fitness += partial_fitnesses[i];
-    }*/
-
     should_update_fitness = false;
 }
 
@@ -117,13 +101,14 @@ int main()
 
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
+    //glfwSwapInterval(1);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     //// GA
     //std::vector<Chromosome> population, newPopulation, elites;
     //for (int i = 0; i < POP_MAX; i++) {
-    //    population.push_back(Chromosome(GENE_MIN));
+    //    population.push_back(Chromosome(POLY_MAX / 2));
     //}
 
     //const unsigned int K = 5;
@@ -254,42 +239,71 @@ int main()
     //        population[i] = elites[i];
     //    }
 
+    //    gen_no++;
+
     //    // display the best individual
+    //    population[0].draw();
     //    glfwSwapBuffers(window);
     //    glfwPollEvents();
-    //    gen_no++;
-    //    M_RATE *= TEMPERATURE;
-    //    if (M_RATE < M_RATE_MIN || M_RATE > M_RATE_MAX)
-    //        M_RATE = M_RATE_MIN;
-    //    if (CX_RATE < CX_RATE_CONST)
-    //        CX_RATE = CX_RATE_CONST;
     //}
 
-    // HC
-    Chromosome curr(POLY_MAX / 2);
-    curr.calculate_fitness();
-    int gen = 0;
-    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    while (!glfwWindowShouldClose(window)) {
+    //// HC
+    //Chromosome curr(POLY_MAX / 2);
+    //curr.calculate_fitness();
+    //int gen = 0;
+    //std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    //while (!glfwWindowShouldClose(window)) {
 
-        if (gen % 1000 == 0) {
-            std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-            std::cout << "gen " << gen << ": " << curr.fitness << " (" << curr.polygons.size() << " polygons)";
-            std::cout << " (time elapsed: " << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() << "s)" << '\n';
-        }
-        gen++;
+    //    if (gen % 1000 == 0) {
+    //        std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    //        std::cout << "gen " << gen << ": " << curr.fitness << " (" << curr.polygons.size() << " polygons)";
+    //        std::cout << " (time elapsed: " << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() << "s)" << '\n';
+    //    }
+    //    gen++;
 
-        Chromosome next = curr;
-        next.mutate();
-        next.calculate_fitness();
+    //    Chromosome next = curr;
+    //    next.mutate();
+    //    next.calculate_fitness();
 
-        if (next.fitness > curr.fitness) {
-            curr = next;
-        }
+    //    if (next.fitness > curr.fitness) {
+    //        curr = next;
+    //    }
 
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
+    //    curr.draw();
+    //    glfwSwapBuffers(window);
+    //    glfwPollEvents();
+    //}
+
+    //// SA
+    //Chromosome curr(POLY_MAX / 2);
+    //curr.calculate_fitness();
+    //int gen = 0;
+    //std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    //while (!glfwWindowShouldClose(window)) {
+
+    //    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    //    std::cout << "gen " << gen << ": " << curr.fitness << " (" << curr.polygons.size() << " polygons)";
+    //    std::cout << " (time elapsed: " << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() << "s)";
+    //    std::cout << " (temp: " << TEMPERATURE << ")\n";
+    //    
+
+    //    for (int i = 0; i < 1000; i++) {
+    //        Chromosome next = curr;
+    //        next.mutate();
+    //        next.calculate_fitness();
+
+    //        if (next.fitness > curr.fitness || rnd2 < exp(-abs(next.fitness - curr.fitness) / TEMPERATURE)) {
+    //            curr = next;
+    //        }
+
+    //        curr.draw();
+    //        glfwSwapBuffers(window);
+    //        glfwPollEvents();
+    //    }
+
+    //    TEMPERATURE *= 0.5;
+    //    gen++;
+    //}
 
     glfwTerminate();
     delete[] currChromoPixels;

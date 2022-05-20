@@ -3,14 +3,14 @@
 
 #define POP_MAX 30
 #define GENE_MIN 10
-#define GENE_MAX 300
-#define CX_RATE_CONST 0.8
-#define M_RATE_MIN 0.01
+#define GENE_MAX 200
+#define CX_RATE_CONST 0.95
+#define M_RATE_MIN 0.05
 #define M_RATE_MAX 0.1
 #define TRIGGERED_HYPER_M_RATE 0.2
 double M_RATE = M_RATE_MAX;
 double CX_RATE = CX_RATE_CONST;
-#define TEMPERATURE 0.99
+double TEMPERATURE = 1.0;
 #define rnd1 (2.0*(double)rand()/RAND_MAX-1.0) // [-1.0, 1.0]
 #define rnd2 ((double)rand()/RAND_MAX) // [0.0, 1.0]
 #define rnd3 (rnd1/(100*rnd1)) // [-0.01, 0.01]
