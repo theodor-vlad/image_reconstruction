@@ -1,0 +1,91 @@
+#pragma once
+#include <string>
+#include <chrono>
+#include "Chromosome.h"
+#include "Genetic.h"
+#include "Annealer.h"
+#include "Hillclimber.h"
+#include <fstream>
+
+class Serializer {
+
+public:
+	static enum algorithm_t {
+		GENETIC = 1,
+		HILLCLIMBER,
+		ANNEALER,
+		NOT_SET
+	};
+
+private:
+	algorithm_t algorithm;
+
+public:
+
+	Serializer() {
+		algorithm = NOT_SET;
+	}
+
+	void set_algortihm(algorithm_t _algorithm) {
+		algorithm = _algorithm;
+	}
+
+	bool serialize() {
+		bool result = true;
+		std::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+		std::string datetime_s = tokenize_and_return_date(std::string(std::ctime(&now)));
+		std::string path;
+		Chromosome solution;
+
+		switch (algorithm)
+		{
+		case GENETIC:
+			path = "F:\\licenta\\image_processing\\dna\\ga\\" + datetime_s + ".json";
+			solution = GA::population[0];
+			break;
+		case HILLCLIMBER:
+			path = "F:\\licenta\\image_processing\\dna\\hc\\" + datetime_s + ".json";
+			solution = HC::curr;
+			break;
+		case ANNEALER:
+			path = "F:\\licenta\\image_processing\\dna\\sa\\" + datetime_s + ".json";
+			solution = SA::curr;
+			break;
+		default:
+			result = false;
+			break;
+		}
+
+		if (result == true) {
+			std::ofstream outfile(path);
+			outfile << solution << '\n';
+			outfile.close();
+			return true;
+		}
+
+		return result;
+	}
+
+	~Serializer() = default;
+
+private:
+	std::string tokenize_and_return_date(std::string str) {
+		const char tok[5] = "\n :";
+		char c_str[30];
+		char* aux;
+
+		std::string result = "";
+		strcpy(c_str, str.c_str());
+
+		aux = strtok(c_str, tok);
+		result += aux;
+		while (aux) {
+			aux = strtok(NULL, tok);
+			if (aux) {
+				result += "_" + std::string(aux);
+			}
+		}
+
+		return result;
+	}
+};

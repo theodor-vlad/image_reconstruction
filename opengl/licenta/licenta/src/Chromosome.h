@@ -1,3 +1,4 @@
+#pragma once
 #include "Polygon.h"
 #include <vector>
 #include <functional>
@@ -23,24 +24,24 @@ struct Chromosome {
 
 	void mutate() {
 
-		if (polygons.size() < POLY_MAX && rnd2 < PROB_ADD_POLY) {
+		if (polygons.size() < POLY_MAX && rnd2(rgen) < PROB_ADD_POLY) {
 			polygons.push_back(Polygon(POINT_MIN));
 		}
-		if (polygons.size() > POLY_MIN && rnd2 < PROB_REMOVE_POLY) {
-			int idx = rnd2 * (polygons.size() - 1);
+		if (polygons.size() > POLY_MIN && rnd2(rgen) < PROB_REMOVE_POLY) {
+			int idx = rnd2(rgen) * (polygons.size() - 1);
 			polygons.erase(polygons.begin() + idx);
 		}
 
 		for (auto& poly : polygons) {
 
 			// replace polygon altogether
-			if (rnd2 < PROB_REPLACE_POLY) {
+			if (rnd2(rgen) < PROB_REPLACE_POLY) {
 				poly = Polygon(POINT_MIN);
 			}
 
 			// add point
-			if (poly.vertices.size() <= POINT_MAX && rnd2 < PROB_ADD_POINT) {
-				int idx = rnd2 * (poly.vertices.size() - 2);
+			if (poly.vertices.size() <= POINT_MAX && rnd2(rgen) < PROB_ADD_POINT) {
+				int idx = rnd2(rgen) * (poly.vertices.size() - 2);
 				Point prev = poly.vertices[idx];
 				Point next = poly.vertices[idx + 1];
 				Point p = Point(prev.x / 2 + next.x / 2, prev.y / 2 + prev.y / 2);
@@ -48,51 +49,51 @@ struct Chromosome {
 			}
 
 			// remove point
-			if (poly.vertices.size() > POINT_MIN && rnd2 < PROB_REMOVE_POINT) {
-				int idx = rnd2 * (poly.vertices.size() - 1);
+			if (poly.vertices.size() > POINT_MIN && rnd2(rgen) < PROB_REMOVE_POINT) {
+				int idx = rnd2(rgen) * (poly.vertices.size() - 1);
 				poly.vertices.erase(poly.vertices.begin() + idx);
 			}
 
 			// adjust points by small, random amount
-			if (rnd2 < PROB_JIGGLE_POINTS) {
+			if (rnd2(rgen) < PROB_JIGGLE_POINTS) {
 				for (auto& vertex : poly.vertices) {
-					vertex.x += rnd3;
-					vertex.y += rnd3;
-					if (vertex.x < -1.0 || vertex.x > 1.0) vertex.x = rnd1;
-					if (vertex.y < -1.0 || vertex.y > 1.0) vertex.y = rnd1;
+					vertex.x += rnd3(rgen);
+					vertex.y += rnd3(rgen);
+					if (vertex.x < -1.0 || vertex.x > 1.0) vertex.x = rnd1(rgen);
+					if (vertex.y < -1.0 || vertex.y > 1.0) vertex.y = rnd1(rgen);
 				}
 			}
 
 			// adjust hue of polygon
-			if (rnd2 < PROB_ADJUST_HUE) {
-				poly.color.r += 10 * rnd3;
-				poly.color.g += 10 * rnd3;
-				poly.color.b += 10 * rnd3;
-				poly.color.a += 10 * rnd3;
-				if (poly.color.r < 0.0 || poly.color.r > 1.0) poly.color.r = rnd2;
-				if (poly.color.g < 0.0 || poly.color.g > 1.0) poly.color.g = rnd2;
-				if (poly.color.b < 0.0 || poly.color.b > 1.0) poly.color.b = rnd2;
-				if (poly.color.a < 0.15 || poly.color.a > 0.5) poly.color.a = rnd2 * 0.35 + 0.15;
+			if (rnd2(rgen) < PROB_ADJUST_HUE) {
+				poly.color.r += 10 * rnd3(rgen);
+				poly.color.g += 10 * rnd3(rgen);
+				poly.color.b += 10 * rnd3(rgen);
+				poly.color.a += 10 * rnd3(rgen);
+				if (poly.color.r < 0.0 || poly.color.r > 1.0) poly.color.r = rnd2(rgen);
+				if (poly.color.g < 0.0 || poly.color.g > 1.0) poly.color.g = rnd2(rgen);
+				if (poly.color.b < 0.0 || poly.color.b > 1.0) poly.color.b = rnd2(rgen);
+				if (poly.color.a < 0.15 || poly.color.a > 0.5) poly.color.a = rnd2(rgen) * 0.35 + 0.15;
 			}
 
 			// translate polygon
-			if (rnd2 < PROB_TRANSLATE_POLY) {
-				float tx = rnd3;
-				float ty = rnd3;
+			if (rnd2(rgen) < PROB_TRANSLATE_POLY) {
+				float tx = rnd3(rgen);
+				float ty = rnd3(rgen);
 
 				for (auto& vertex : poly.vertices) {
 					vertex.x += tx;
 					vertex.y += ty;
 
 					// correct point if it is out of bounds
-					if (vertex.x < -1.0 || vertex.x > 1.0) vertex.x = rnd1;
-					if (vertex.y < -1.0 || vertex.y > 1.0) vertex.y = rnd1;
+					if (vertex.x < -1.0 || vertex.x > 1.0) vertex.x = rnd1(rgen);
+					if (vertex.y < -1.0 || vertex.y > 1.0) vertex.y = rnd1(rgen);
 				}
 			}
 
 			// rotate polygon around centroid
-			if (rnd2 < PROB_ROTATE_POLY) {
-				float angle = rnd3 * 10.0;
+			if (rnd2(rgen) < PROB_ROTATE_POLY) {
+				float angle = rnd3(rgen) * 10.0;
 				float s = sin(angle);
 				float c = cos(angle);
 
@@ -109,14 +110,14 @@ struct Chromosome {
 					vertex.y = vertex.x * s + vertex.y * c + centroid.y;
 
 					// correct point if it is out of bounds
-					if (vertex.x < -1.0 || vertex.x > 1.0) vertex.x = rnd1;
-					if (vertex.y < -1.0 || vertex.y > 1.0) vertex.y = rnd1;
+					if (vertex.x < -1.0 || vertex.x > 1.0) vertex.x = rnd1(rgen);
+					if (vertex.y < -1.0 || vertex.y > 1.0) vertex.y = rnd1(rgen);
 				}
 			}
 
 			// scale polygon
-			if (rnd2 < PROB_SCALE_POLY) {
-				float factor = rnd2 + 0.5;
+			if (rnd2(rgen) < PROB_SCALE_POLY) {
+				float factor = rnd2(rgen) + 0.5;
 
 				Point centroid_before = poly.centroid;
 				for (auto& vertex : poly.vertices) {
@@ -133,8 +134,8 @@ struct Chromosome {
 					vertex.y += offset_y;
 
 					// correct point if it is out of bounds
-					if (vertex.x < -1.0 || vertex.x > 1.0) vertex.x = rnd1;
-					if (vertex.y < -1.0 || vertex.y > 1.0) vertex.y = rnd1;
+					if (vertex.x < -1.0 || vertex.x > 1.0) vertex.x = rnd1(rgen);
+					if (vertex.y < -1.0 || vertex.y > 1.0) vertex.y = rnd1(rgen);
 				}
 			}
 
@@ -145,8 +146,8 @@ struct Chromosome {
 
 	std::pair<Chromosome, Chromosome> cut_and_splice(const Chromosome& other) {
 		Chromosome child1, child2;
-		unsigned int cutpoint1 = rnd2 * this->polygons.size();
-		unsigned int cutpoint2 = rnd2 * other.polygons.size();
+		unsigned int cutpoint1 = rnd2(rgen) * this->polygons.size();
+		unsigned int cutpoint2 = rnd2(rgen) * other.polygons.size();
 
 		for (unsigned int i = 0; i < this->polygons.size(); i++) {
 			if (i < cutpoint1) {
@@ -192,7 +193,7 @@ struct Chromosome {
 	std::pair<Chromosome, Chromosome> random_crossover(const Chromosome& other) {
 		Chromosome child1, child2;
 		for (unsigned int i = 0; i < polygons.size(); i++) {
-			if (rnd2 < 0.5) {
+			if (rnd2(rgen) < 0.5) {
 				child1.polygons.push_back(polygons[i]);
 				child2.polygons.push_back(other.polygons[i]);
 			}
@@ -203,6 +204,30 @@ struct Chromosome {
 		}
 
 		return { child1, child2 };
+	}
+
+	friend std::ofstream& operator<<(std::ofstream& out, const Chromosome& c) {
+		out << "[\n";
+		for (int i = 0; i < c.polygons.size(); i++) {
+			out << c.polygons[i];
+			if (i != c.polygons.size() - 1) {
+				out << ",\n";
+			}
+		}
+		out << "\n]";
+		return out;
+	}
+
+	friend std::ostream& operator<<(std::ostream& out, const Chromosome& c) {
+		out << "[\n";
+		for (int i = 0; i < c.polygons.size(); i++) {
+			out << c.polygons[i];
+			if (i != c.polygons.size() - 1) {
+				out << ",\n";
+			}
+		}
+		out << "\n]";
+		return out;
 	}
 
 	~Chromosome() = default;

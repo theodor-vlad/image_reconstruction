@@ -9,6 +9,8 @@ struct Polygon {
 	Point centroid;
 	Color color;
 
+	Polygon() {};
+
 	Polygon(unsigned int n) {
 		for (unsigned int i = 0; i < n; i++)
 			vertices.push_back(Point());
@@ -28,5 +30,35 @@ private:
 		centroid.x /= vertices.size();
 		centroid.y /= vertices.size();
 		this->centroid = centroid;
+	}
+
+	friend std::ofstream& operator<<(std::ofstream& out, const Polygon& p) {
+		out << "\t{\n";
+		out << "\t\t\"vertices\": [\n";
+		for (int i = 0; i < p.vertices.size(); i++) {
+			out << p.vertices[i];
+			if (i != p.vertices.size() - 1) {
+				out << ",\n";
+			}
+		}
+		out << "\n\t\t],\n";
+		out << "\t\t\"color\": ";
+		out << p.color << "\n\t}";
+		return out;
+	}
+
+	friend std::ostream& operator<<(std::ostream& out, const Polygon& p) {
+		out << "\t{\n";
+		out << "\t\t\"vertices\": [\n";
+		for (int i = 0; i < p.vertices.size(); i++) {
+			out << p.vertices[i];
+			if (i != p.vertices.size() - 1) {
+				out << ",\n";
+			}
+		}
+		out << "\n\t\t],\n";
+		out << "\t\t\"color\": ";
+		out << p.color << "\n\t}";
+		return out;
 	}
 };

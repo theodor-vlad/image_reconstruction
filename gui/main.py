@@ -18,8 +18,8 @@ def browseFiles():
     global filename
     filename = filedialog.askopenfilename(initialdir = "/",
                                           title = "Select a File",
-                                          filetypes = (("Text files",
-                                                        "*.txt*"),
+                                          filetypes = (("JPG files",
+                                                        "*.jpg*"),
                                                        ("All files",
                                                         "*.*")))
       
@@ -56,7 +56,15 @@ button_explore = Button(window,
 button_run = Button(window,
                      text = "Run",
                      command = extract_pixels_and_run_GA)
-  
+
+# approximation method
+variable = StringVar(window)
+variable.set("Hillclimber") # default value
+
+w = OptionMenu(window, variable, "Genetic Algorithm", "Hillclimber", "Simulated Annealing")
+w.pack()
+w.place(x=240,y=250)
+
 # Grid method is chosen for placing
 # the widgets at respective positions
 # in a table like structure by
