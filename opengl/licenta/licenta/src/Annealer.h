@@ -13,27 +13,27 @@ namespace SA {
         std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
         while (!glfwWindowShouldClose(window)) {
 
-            if (gen % 1000 == 0) {
-                std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-                std::cout << "gen " << gen << ": " << curr.fitness << " (" << curr.polygons.size() << " polygons)";
-                std::cout << " (time elapsed: " << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() << "s)";
-                std::cout << " (temp: " << TEMPERATURE << ")\n";
-            }
+            std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+            std::cout << "gen " << gen << ": " << curr.fitness << " (" << curr.polygons.size() << " polygons)";
+            std::cout << " (time elapsed: " << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() << "s)";
+            std::cout << " (temp: " << TEMPERATURE << ")\n";
         
-            Chromosome next = curr;
-            next.mutate();
-            next.calculate_fitness();
+            for (int i = 0; i < 100; i++) {
+                Chromosome next = curr;
+                next.mutate();
+                next.calculate_fitness();
 
-            if (next.fitness > curr.fitness || rnd2(rgen) < exp(-abs(next.fitness - curr.fitness) / TEMPERATURE)) {
-                curr = next;
+                if (next.fitness > curr.fitness || rnd2(rgen) < exp(-abs(next.fitness - curr.fitness) / TEMPERATURE)) {
+                    curr = next;
+                }
+
+                curr.draw();
+                glfwSwapBuffers(window);
+                glfwPollEvents();
             }
 
-            TEMPERATURE *= 0.999;
+            TEMPERATURE *= 0.3;
             gen++;
-
-            curr.draw();
-            glfwSwapBuffers(window);
-            glfwPollEvents();
         }
 	}
 }

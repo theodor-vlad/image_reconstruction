@@ -11,30 +11,49 @@ from tkinter import filedialog
 import subprocess
 
 filename = None
+mode = None
+approximation_method = 2
 
 # Function for opening the
 # file explorer window
 def browseFiles():
     global filename
+    global mode
     filename = filedialog.askopenfilename(initialdir = "/",
                                           title = "Select a File",
                                           filetypes = (("JPG files",
                                                         "*.jpg*"),
-                                                       ("All files",
-                                                        "*.*")))
+                                                        ("JSON files",
+                                                        "*.json*")))
       
     # Change label contents
-    label_file_explorer.configure(text="File Opened: "+filename)
+    label_file_explorer.configure(text="File Opened: " + filename)
 
-def extract_pixels_and_run_GA():
-    subprocess.run(['python3', '..\\image_processing\\read_and_print_pixels.py', filename])
+    if filename.split('.')[-1] == 'jpg':
+        mode = 0
+        button_run.configure(text='Approximate image')
+    else:
+        mode = 1
+        button_run.configure(text='Render DNA')
+    
+    button_run['state'] = 'normal'
+
+def approximate_or_render():
+    subprocess.run(['python3', '..\\image_processing\\read_and_print_pixels.py', str(mode), filename, str(approximation_method)])
     subprocess.run(['compile_and_run.bat'], shell=True)
+
+def approximation_method_callback(selection):
+    global approximation_method
+    for i, method in enumerate(["Genetic Algorithm", "Best improvement HC", "First improvement HC", "Simulated Annealing"]):
+        if method == selection:
+            approximation_method = i
+            break
 
 # Create the root window
 window = Tk()
   
 # Set window title
-window.title('File Explorer')
+window.title('Image approximator using polygons')
   
 # Set window size
 window.geometry("500x500")
@@ -55,13 +74,14 @@ button_explore = Button(window,
   
 button_run = Button(window,
                      text = "Run",
-                     command = extract_pixels_and_run_GA)
+                     command = approximate_or_render)
+button_run['state'] = 'disabled'
 
 # approximation method
 variable = StringVar(window)
-variable.set("Hillclimber") # default value
+variable.set("First improvement HC") # default value
 
-w = OptionMenu(window, variable, "Genetic Algorithm", "Hillclimber", "Simulated Annealing")
+w = OptionMenu(window, variable, "Genetic Algorithm", "Best improvement HC", "First improvement HC", "Simulated Annealing", command=approximation_method_callback)
 w.pack()
 w.place(x=240,y=250)
 

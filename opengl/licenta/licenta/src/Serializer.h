@@ -11,8 +11,9 @@ class Serializer {
 
 public:
 	static enum algorithm_t {
-		GENETIC = 1,
-		HILLCLIMBER,
+		GENETIC = 0,
+		HILLCLIMBER_BEST,
+		HILLCLIMBER_FIRST,
 		ANNEALER,
 		NOT_SET
 	};
@@ -43,8 +44,12 @@ public:
 			path = "F:\\licenta\\image_processing\\dna\\ga\\" + datetime_s + ".json";
 			solution = GA::population[0];
 			break;
-		case HILLCLIMBER:
-			path = "F:\\licenta\\image_processing\\dna\\hc\\" + datetime_s + ".json";
+		case HILLCLIMBER_BEST:
+			path = "F:\\licenta\\image_processing\\dna\\hcbi\\" + datetime_s + ".json";
+			solution = HC::curr;
+			break;
+		case HILLCLIMBER_FIRST:
+			path = "F:\\licenta\\image_processing\\dna\\hcfi\\" + datetime_s + ".json";
 			solution = HC::curr;
 			break;
 		case ANNEALER:
@@ -58,7 +63,11 @@ public:
 
 		if (result == true) {
 			std::ofstream outfile(path);
-			outfile << solution << '\n';
+			outfile << "{\n" << "\"width\": " << IMG_WIDTH << ",\n";
+			outfile << "\"height\": " << IMG_HEIGHT << ",\n";
+			outfile << "\"chromosome\": ";
+			outfile << solution;
+			outfile << "\n}";
 			outfile.close();
 			return true;
 		}

@@ -11,16 +11,36 @@ class Deserializer {
 	Deserializer() = delete;
 	
 public:
-	static Chromosome deserialize(const std::string& path) {
+	static bool get_and_set_screen_dimensions(const std::string& path) {
 		std::ifstream infile(path);
 		std::stringstream buffer;
 		buffer << infile.rdbuf();
 		json j = json::parse(buffer.str());
-		
-		if (false == j.is_array()) {
+
+		if (false == j.is_object() ||
+			false == j.contains("width") ||
+			false == j.contains("height") ||
+			false == j["width"].is_number_unsigned() ||
+			false == j["height"].is_number_unsigned()) {
+			std::cout << "Invalid json 0\n";
+			return false;
+		}
+		IMG_WIDTH = j["width"];
+		IMG_HEIGHT = j["height"];
+		return true;
+	}
+
+	static Chromosome reconstruct_solution_from_file(const std::string& path) {
+		std::ifstream infile(path);
+		std::stringstream buffer;
+		buffer << infile.rdbuf();
+		json j = json::parse(buffer.str());
+
+		if (false == j.contains("chromosome") || false == j["chromosome"].is_array()) {
 			std::cout << "Invalid json 1\n";
 			return Chromosome();
 		}
+		j = j["chromosome"];
 
 		Chromosome solution;
 		for (auto poly_it = j.begin(); poly_it != j.end(); poly_it++) {

@@ -29,7 +29,7 @@ const int POINT_MIN = 3;
 const int POINT_MAX = 10;
 
 const double PROB_REPLACE_POLY = 0.0000001;
-const double PROB_ADD_POLY = 1.0 / 7.5;
+const double PROB_ADD_POLY = 1.0 / 3.5;
 const double PROB_REMOVE_POLY = 1.0 / 15.0;
 
 const double PROB_JIGGLE_POINTS = 1.0 / 100.0;
@@ -42,3 +42,5 @@ const double PROB_ROTATE_POLY = 1.0 / 100.0;
 const double PROB_SCALE_POLY = 1.0 / 100.0;
 
 const double PROB_TRANSLATE_POINT = 1.0 / 100.0;
+
+unsigned int IMG_WIDTH, IMG_HEIGHT;
