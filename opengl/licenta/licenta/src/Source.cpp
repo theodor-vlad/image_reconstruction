@@ -17,14 +17,14 @@
 #include "Serializer.h"
 #include "Deserializer.h"
 
-std::ifstream fin("F:\\licenta\\opengl\\licenta\\licenta\\input.txt");
+std::ifstream fin("licenta\\input.txt");
 
 //---------------------------------------- GLOBALS --------------------------------------------------
 unsigned int num_of_bgra_values;
 unsigned char* targetImgPixels;
 unsigned char* currChromoPixels;
 unsigned int mode, method;
-std::string path_to_json;
+std::string path_to_json, approximation_method;
 Serializer s;
 
 //--------------------------------------- FUNCTIONS -------------------------------------------------
@@ -42,12 +42,15 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 void initialize() {
+    srand(time(NULL));
+
     int counter_target_img_pixels = 0;
     int r, g, b;
     fin >> mode;
     if (mode == 0) {
         // approximate
         fin >> method;
+        fin >> path_to_image;
         fin >> IMG_WIDTH >> IMG_HEIGHT;
         num_of_bgra_values = IMG_WIDTH * IMG_HEIGHT * DIMENSIONS;
         targetImgPixels = new unsigned char[num_of_bgra_values];
@@ -124,7 +127,7 @@ void Chromosome::calculate_fitness() {
     should_update_fitness = false;
 }
 //------------------------------------------ MAIN ----------------------------------------------------
-int main()
+int main(int argc, char** argv)
 {
     initialize();
 
@@ -154,6 +157,8 @@ int main()
     }
     else if (mode == 1) {
         Chromosome solution = Deserializer::reconstruct_solution_from_file(path_to_json);
+        approximation_method = Deserializer::get_approximation_method(path_to_json);
+        glfwSetWindowTitle(window, approximation_method.c_str());
 
         while (!glfwWindowShouldClose(window)) {
             solution.draw();

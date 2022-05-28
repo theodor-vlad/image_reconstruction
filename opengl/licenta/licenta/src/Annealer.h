@@ -23,7 +23,7 @@ namespace SA {
                 next.mutate();
                 next.calculate_fitness();
 
-                if (next.fitness > curr.fitness || rnd2(rgen) < exp(-abs(next.fitness - curr.fitness) / TEMPERATURE)) {
+                if (next.fitness > curr.fitness || rnd2 < exp(-abs(next.fitness - curr.fitness) / TEMPERATURE)) {
                     curr = next;
                 }
 

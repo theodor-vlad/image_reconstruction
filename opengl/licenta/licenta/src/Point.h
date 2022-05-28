@@ -6,7 +6,7 @@
 struct Point {
 	GLfloat x, y;
 	Point() {
-		std::tie(x, y) = std::make_tuple(rnd1(rgen), rnd1(rgen));
+		std::tie(x, y) = std::make_tuple(rnd1, rnd1);
 	}
 	Point(float _x, float _y) {
 		std::tie(x, y) = std::make_tuple(_x, _y);

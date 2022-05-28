@@ -4,12 +4,13 @@ from PIL import Image
 
 DESIRED_HEIGHT = 500
 
-with open("F:\\licenta\\opengl\\licenta\\licenta\\input.txt", "w") as f:
+with open("../opengl/licenta/licenta/input.txt", "w") as f:
 
     f.write(f'{sys.argv[1]}\n')
 
     if sys.argv[1] == '0': # approximate
         f.write(f'{sys.argv[3]}\n')
+        f.write(f'{sys.argv[2]}\n')
     elif sys.argv[1] == '1': # render
         windows_path = sys.argv[2].replace('/', '\\\\')
         f.write(f'{windows_path}\n')

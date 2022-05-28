@@ -6,8 +6,8 @@
 struct Color {
 	GLfloat r, g, b, a;
 	Color() {
-		std::tie(r, g, b) = std::make_tuple(rnd2(rgen), rnd2(rgen), rnd2(rgen));
-		a = rnd2(rgen) * 0.35 + 0.15;
+		std::tie(r, g, b) = std::make_tuple(rnd2, rnd2, rnd2);
+		a = rnd2 * 0.35 + 0.15;
 	}
 
 	Color(double _r, double _g, double _b, double _a) {

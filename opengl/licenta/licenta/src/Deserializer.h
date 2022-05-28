@@ -11,6 +11,21 @@ class Deserializer {
 	Deserializer() = delete;
 	
 public:
+	static std::string get_approximation_method(const std::string& path) {
+		std::ifstream infile(path);
+		std::stringstream buffer;
+		buffer << infile.rdbuf();
+		json j = json::parse(buffer.str());
+
+		if (false == j.is_object() ||
+			false == j.contains("approximation_method") ||
+			false == j["approximation_method"].is_string()) {
+			std::cout << "Invalid json 0.5\n";
+			return "Unknown approximation method";
+		}
+		return j["approximation_method"];
+	}
+
 	static bool get_and_set_screen_dimensions(const std::string& path) {
 		std::ifstream infile(path);
 		std::stringstream buffer;

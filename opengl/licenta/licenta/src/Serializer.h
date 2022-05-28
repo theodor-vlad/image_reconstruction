@@ -36,6 +36,7 @@ public:
 		std::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 		std::string datetime_s = tokenize_and_return_date(std::string(std::ctime(&now)));
 		std::string path;
+		std::string method_s;
 		Chromosome solution;
 
 		switch (algorithm)
@@ -43,18 +44,22 @@ public:
 		case GENETIC:
 			path = "F:\\licenta\\image_processing\\dna\\ga\\" + datetime_s + ".json";
 			solution = GA::population[0];
+			method_s = "Genetic Algorithm";
 			break;
 		case HILLCLIMBER_BEST:
 			path = "F:\\licenta\\image_processing\\dna\\hcbi\\" + datetime_s + ".json";
 			solution = HC::curr;
+			method_s = "Hillclimbing - Best improvement";
 			break;
 		case HILLCLIMBER_FIRST:
 			path = "F:\\licenta\\image_processing\\dna\\hcfi\\" + datetime_s + ".json";
 			solution = HC::curr;
+			method_s = "Hillclimbing - First improvement";
 			break;
 		case ANNEALER:
 			path = "F:\\licenta\\image_processing\\dna\\sa\\" + datetime_s + ".json";
 			solution = SA::curr;
+			method_s = "Simulated Annealing";
 			break;
 		default:
 			result = false;
@@ -65,6 +70,8 @@ public:
 			std::ofstream outfile(path);
 			outfile << "{\n" << "\"width\": " << IMG_WIDTH << ",\n";
 			outfile << "\"height\": " << IMG_HEIGHT << ",\n";
+			outfile << "\"path_to_image\": \"" << path_to_image << "\",\n";
+			outfile << "\"approximation_method\": \"" << method_s << "\",\n";
 			outfile << "\"chromosome\": ";
 			outfile << solution;
 			outfile << "\n}";

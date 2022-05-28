@@ -6,7 +6,7 @@
 #include "GLFW/glfw3.h"
 
 namespace HC {
-    Chromosome curr(1);
+    Chromosome curr(POLY_MAX / 2);
 
 	void run_best_improvement() {
         // HC

@@ -81,7 +81,7 @@ namespace GA {
 
             for (unsigned i = 0; i < population.size(); ++i)
             {
-                selection_prob = rnd2(rgen);
+                selection_prob = rnd2;
                 for (unsigned j = 0; j < population.size(); ++j)
                     if (accumulated_prob[j] < selection_prob && selection_prob <= accumulated_prob[j + 1])
                     {
@@ -101,7 +101,7 @@ namespace GA {
             // crossover: generate probabilites for each individual
             crossover_prob.clear();
             for (unsigned i = 0; i < population.size(); ++i)
-                crossover_prob.push_back({ i, rnd2(rgen) });
+                crossover_prob.push_back({ i, rnd2 });
 
             // sort the individuals in the ascending order of the generated probabilites
             std::sort(crossover_prob.begin(), crossover_prob.end(), [](std::pair<unsigned, double> p1, std::pair<unsigned, double> p2) {
@@ -118,7 +118,7 @@ namespace GA {
             //    auto secondParent = population[secondParentIndex];
 
             //    // determine the cutpoint
-            //    unsigned int cutpoint = rnd4(rgen);
+            //    unsigned int cutpoint = rnd4;
 
             //    // cross the parents over using order, single-cutpoint crossover, then override the parents
             //    std::tie(population[firstParentIndex], population[secondParentIndex]) = firstParent.order_crossover(secondParent, cutpoint);
