@@ -23,7 +23,9 @@ with open("../opengl/licenta/licenta/input.txt", "w") as f:
         pixels = list(im.getdata())
         for i in range(im.height):
             for j in range(im.width // 2):
-                pixels[i * im.width + j], pixels[i * im.width + im.width - j - 1] = pixels[i * im.width + im.width - j - 1], pixels[i * im.width + j]
+                aux = pixels[i * im.width + j]
+                pixels[i * im.width + j] = pixels[i * im.width + im.width - j - 1]
+                pixels[i * im.width + im.width - j - 1] = aux
         
         for r, g, b in reversed(pixels):
             f.write(f'{b} {g} {r}\n')

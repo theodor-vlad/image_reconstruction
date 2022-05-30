@@ -4,19 +4,32 @@
 #include <iostream>
 
 namespace SA {
-    Chromosome curr(1);
+    Chromosome curr(POLY_MAX / 2);
+    std::chrono::steady_clock::time_point begin, end;
+
+    long long get_running_duration() {
+        return std::chrono::duration_cast<std::chrono::seconds>(end - begin).count();
+    }
 
 	void run() {
-
         curr.calculate_fitness();
+        double avg_temp = 0.0;
+        for (int i = 0; i < 100; i++) {
+            Chromosome randomChromo(POLY_MAX / 2);
+            randomChromo.calculate_fitness();
+            avg_temp += randomChromo.fitness;
+        }
+        TEMPERATURE = avg_temp /= 1000;
         int gen = 0;
-        std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+        begin = std::chrono::steady_clock::now();
         while (!glfwWindowShouldClose(window)) {
 
-            std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-            std::cout << "gen " << gen << ": " << curr.fitness << " (" << curr.polygons.size() << " polygons)";
-            std::cout << " (time elapsed: " << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() << "s)";
-            std::cout << " (temp: " << TEMPERATURE << ")\n";
+            end = std::chrono::steady_clock::now();
+            if (gen % 10 == 0) {
+                std::cout << "gen " << gen << ": " << curr.fitness << " (" << curr.polygons.size() << " polygons)";
+                std::cout << " (time elapsed: " << get_running_duration() << "s)";
+                std::cout << " (temp: " << TEMPERATURE << ")\n";
+            }
         
             for (int i = 0; i < 100; i++) {
                 Chromosome next = curr;
@@ -32,7 +45,7 @@ namespace SA {
                 glfwPollEvents();
             }
 
-            TEMPERATURE *= 0.3;
+            TEMPERATURE *= 0.999;
             gen++;
         }
 	}

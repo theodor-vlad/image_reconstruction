@@ -20,7 +20,6 @@ public:
 		if (false == j.is_object() ||
 			false == j.contains("approximation_method") ||
 			false == j["approximation_method"].is_string()) {
-			std::cout << "Invalid json 0.5\n";
 			return "Unknown approximation method";
 		}
 		return j["approximation_method"];
@@ -37,7 +36,6 @@ public:
 			false == j.contains("height") ||
 			false == j["width"].is_number_unsigned() ||
 			false == j["height"].is_number_unsigned()) {
-			std::cout << "Invalid json 0\n";
 			return false;
 		}
 		IMG_WIDTH = j["width"];
@@ -52,7 +50,6 @@ public:
 		json j = json::parse(buffer.str());
 
 		if (false == j.contains("chromosome") || false == j["chromosome"].is_array()) {
-			std::cout << "Invalid json 1\n";
 			return Chromosome();
 		}
 		j = j["chromosome"];
@@ -65,7 +62,6 @@ public:
 				false == (*poly_it)["vertices"].is_array() ||
 				false == (*poly_it).contains("color") ||
 				false == (*poly_it)["color"].is_object()) {
-				std::cout << "Invalid json 2\n";
 				return Chromosome();
 			}
 
@@ -76,7 +72,6 @@ public:
 					false == (*vertex_it)["x"].is_number_float() ||
 					false == (*vertex_it).contains("y") ||
 					false == (*vertex_it)["y"].is_number_float()) {
-					std::cout << "Invalid json 3\n";
 					return Chromosome();
 				}
 
@@ -93,7 +88,6 @@ public:
 				false == (*poly_it)["color"]["b"].is_number_float() ||
 				false == (*poly_it)["color"].contains("a") ||
 				false == (*poly_it)["color"]["a"].is_number_float()) {
-				std::cout << "Invalid json 4\n";
 				return Chromosome();
 			}
 

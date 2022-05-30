@@ -20,9 +20,6 @@
 std::ifstream fin("licenta\\input.txt");
 
 //---------------------------------------- GLOBALS --------------------------------------------------
-unsigned int num_of_bgra_values;
-unsigned char* targetImgPixels;
-unsigned char* currChromoPixels;
 unsigned int mode, method;
 std::string path_to_json, approximation_method;
 Serializer s;
@@ -72,7 +69,7 @@ void initialize() {
             exit(-1);
         }
     }
-    
+
     /* Initialize the library */
     if (!glfwInit())
         exit(-1);
@@ -94,38 +91,6 @@ void initialize() {
     s.set_algortihm(Serializer::algorithm_t(method));
 }
 
-void Chromosome::draw() {
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    for (auto& poly : polygons) {
-        glBegin(GL_POLYGON);
-        glColor4f(poly.color.r, poly.color.g, poly.color.b, poly.color.a); // RGBA
-        for (auto& vertex : poly.vertices)
-            glVertex2f(vertex.x, vertex.y);
-        glEnd();
-    }
-}
-
-void Chromosome::calculate_fitness() {
-
-    // draw the chromosome to the screen
-    draw();
-
-    // capture pixels
-    glReadPixels(0, 0, IMG_WIDTH, IMG_HEIGHT, GL_BGRA_EXT, GL_UNSIGNED_BYTE, (GLvoid*)currChromoPixels);
-
-    // calculate pixel-by-pixel 3d distance between capture and target image and update fitness
-    double fit = 0.0;
-    #pragma omp parallel for schedule(guided, 1024) reduction(+:fit)
-    for (int i = 0; i < num_of_bgra_values; i += 4) {
-        fit += (double(currChromoPixels[i]) - double(targetImgPixels[i])) * (double(currChromoPixels[i]) - double(targetImgPixels[i]));
-        fit += (double(currChromoPixels[i + 1]) - double(targetImgPixels[i + 1])) * (double(currChromoPixels[i + 1]) - double(targetImgPixels[i + 1]));
-        fit += (double(currChromoPixels[i + 2]) - double(targetImgPixels[i + 2])) * (double(currChromoPixels[i + 2]) - double(targetImgPixels[i + 2]));
-    }
-    fitness = pow(fit, -2);
-
-    should_update_fitness = false;
-}
 //------------------------------------------ MAIN ----------------------------------------------------
 int main(int argc, char** argv)
 {

@@ -18,9 +18,38 @@ struct Chromosome {
 		}
 	}
 
-	void draw();
+	void draw() {
+		glClear(GL_COLOR_BUFFER_BIT);
 
-	void calculate_fitness();
+		for (auto& poly : polygons) {
+			glBegin(GL_POLYGON);
+			glColor4f(poly.color.r, poly.color.g, poly.color.b, poly.color.a); // RGBA
+			for (auto& vertex : poly.vertices)
+				glVertex2f(vertex.x, vertex.y);
+			glEnd();
+		}
+	}
+
+	void calculate_fitness() {
+
+		// draw the chromosome to the screen
+		draw();
+
+		// capture pixels
+		glReadPixels(0, 0, IMG_WIDTH, IMG_HEIGHT, GL_BGRA_EXT, GL_UNSIGNED_BYTE, (GLvoid*)currChromoPixels);
+
+		// calculate pixel-by-pixel 3d distance between capture and target image and update fitness
+		double fit = 0.0;
+		#pragma omp parallel for schedule(guided, 1024) reduction(+:fit)
+		for (int i = 0; i < num_of_bgra_values; i += 4) {
+			fit += (double(currChromoPixels[i]) - double(targetImgPixels[i])) * (double(currChromoPixels[i]) - double(targetImgPixels[i]));
+			fit += (double(currChromoPixels[i + 1]) - double(targetImgPixels[i + 1])) * (double(currChromoPixels[i + 1]) - double(targetImgPixels[i + 1]));
+			fit += (double(currChromoPixels[i + 2]) - double(targetImgPixels[i + 2])) * (double(currChromoPixels[i + 2]) - double(targetImgPixels[i + 2]));
+		}
+		fitness = pow(fit, -2);
+
+		should_update_fitness = false;
+	}
 
 	void mutate() {
 
@@ -151,22 +180,22 @@ struct Chromosome {
 
 		for (unsigned int i = 0; i < this->polygons.size(); i++) {
 			if (i < cutpoint1) {
-				if (child1.polygons.size() < GENE_MAX)
+				if (child1.polygons.size() < POLY_MAX)
 					child1.polygons.push_back(this->polygons[i]);
 			}
 			else {
-				if (child2.polygons.size() < GENE_MAX)
+				if (child2.polygons.size() < POLY_MAX)
 					child2.polygons.push_back(this->polygons[i]);
 			}
 		}
 
 		for (unsigned int i = 0; i < other.polygons.size(); i++) {
 			if (i < cutpoint2) {
-				if (child2.polygons.size() < GENE_MAX)
+				if (child2.polygons.size() < POLY_MAX)
 					child2.polygons.push_back(other.polygons[i]);
 			}
 			else {
-				if (child1.polygons.size() < GENE_MAX)
+				if (child1.polygons.size() < POLY_MAX)
 					child1.polygons.push_back(other.polygons[i]);
 			}
 		}

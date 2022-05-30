@@ -6,15 +6,20 @@
 
 namespace GA {
     std::vector<Chromosome> population;
+    std::chrono::steady_clock::time_point begin, end;
+
+    long long get_running_duration() {
+        return std::chrono::duration_cast<std::chrono::seconds>(end - begin).count();
+    }
 
 	void run() {
         // GA
         std::vector<Chromosome> newPopulation, elites;
         for (int i = 0; i < POP_MAX; i++) {
-            population.push_back(Chromosome(GENE_MAX / 2));
+            population.push_back(Chromosome(POLY_MIN));
         }
 
-        const unsigned int K = 3;
+        const unsigned int K = 1;
         double total_prob, selection_prob;
         std::vector<double> individual_prob, accumulated_prob;
         std::vector<std::pair<unsigned int, double>> crossover_prob;
@@ -22,7 +27,7 @@ namespace GA {
         unsigned int gen_no = 0, local_minimum_count = 0;
         std::set<unsigned int> elites_indices;
 
-        std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+        begin = std::chrono::steady_clock::now();
         while (!glfwWindowShouldClose(window))
         {
             // calculate fitness where it is due
@@ -55,11 +60,11 @@ namespace GA {
                 elites.push_back(population[best_idx]);
 
                 if (elites.size() == 1) {
+                    end = std::chrono::steady_clock::now();
                     if (gen_no % 100 == 0) {
-                        std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
                         std::cout << "generation " << gen_no << ": " << best_f;
                         std::cout << ", smallest: " << smallest << ", biggest: " << biggest;
-                        std::cout << " (time elapsed: " << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() << "s)" << '\n';
+                        std::cout << " (time elapsed: " << get_running_duration() << "s)" << '\n';
                     }
                 }
             }

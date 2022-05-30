@@ -38,6 +38,7 @@ public:
 		std::string path;
 		std::string method_s;
 		Chromosome solution;
+		long long time_elapsed;
 
 		switch (algorithm)
 		{
@@ -45,21 +46,25 @@ public:
 			path = "F:\\licenta\\image_processing\\dna\\ga\\" + datetime_s + ".json";
 			solution = GA::population[0];
 			method_s = "Genetic Algorithm";
+			time_elapsed = GA::get_running_duration();
 			break;
 		case HILLCLIMBER_BEST:
 			path = "F:\\licenta\\image_processing\\dna\\hcbi\\" + datetime_s + ".json";
 			solution = HC::curr;
 			method_s = "Hillclimbing - Best improvement";
+			time_elapsed = HC::get_running_duration();
 			break;
 		case HILLCLIMBER_FIRST:
 			path = "F:\\licenta\\image_processing\\dna\\hcfi\\" + datetime_s + ".json";
 			solution = HC::curr;
 			method_s = "Hillclimbing - First improvement";
+			time_elapsed = HC::get_running_duration();
 			break;
 		case ANNEALER:
 			path = "F:\\licenta\\image_processing\\dna\\sa\\" + datetime_s + ".json";
 			solution = SA::curr;
 			method_s = "Simulated Annealing";
+			time_elapsed = SA::get_running_duration();
 			break;
 		default:
 			result = false;
@@ -72,11 +77,12 @@ public:
 			outfile << "\"height\": " << IMG_HEIGHT << ",\n";
 			outfile << "\"path_to_image\": \"" << path_to_image << "\",\n";
 			outfile << "\"approximation_method\": \"" << method_s << "\",\n";
+			outfile << "\"time_elapsed\": " << time_elapsed << ",\n";
+			outfile << "\"fitness\": \"" << solution.fitness << "\",\n";
 			outfile << "\"chromosome\": ";
 			outfile << solution;
 			outfile << "\n}";
 			outfile.close();
-			return true;
 		}
 
 		return result;
