@@ -11,6 +11,34 @@ class Deserializer {
 	Deserializer() = delete;
 	
 public:
+	static double get_fitness(const std::string& path) {
+		std::ifstream infile(path);
+		std::stringstream buffer;
+		buffer << infile.rdbuf();
+		json j = json::parse(buffer.str());
+
+		if (false == j.is_object() ||
+			false == j.contains("fitness") ||
+			false == j["fitness"].is_string()) {
+			return -1.0;
+		}
+		return std::stod(std::string(j["fitness"]));
+	}
+
+	static int get_running_time(const std::string& path) {
+		std::ifstream infile(path);
+		std::stringstream buffer;
+		buffer << infile.rdbuf();
+		json j = json::parse(buffer.str());
+
+		if (false == j.is_object() ||
+			false == j.contains("time_elapsed") ||
+			false == j["time_elapsed"].is_number_unsigned()) {
+			return -1;
+		}
+		return j["time_elapsed"];
+	}
+
 	static std::string get_approximation_method(const std::string& path) {
 		std::ifstream infile(path);
 		std::stringstream buffer;
@@ -65,7 +93,7 @@ public:
 				return Chromosome();
 			}
 
-			Polygon to_be_inserted;
+			Poly to_be_inserted;
 			for (auto vertex_it = (*poly_it)["vertices"].begin(); vertex_it != (*poly_it)["vertices"].end(); vertex_it++) {
 
 				if (false == (*vertex_it).contains("x") ||

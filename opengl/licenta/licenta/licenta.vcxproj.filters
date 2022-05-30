@@ -38,7 +38,7 @@
     <ClInclude Include="src\Genetic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hillclimber.h">
+    <ClInclude Include="src\HCFI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Annealer.h">
@@ -48,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Deserializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HCBI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

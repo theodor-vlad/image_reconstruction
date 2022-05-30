@@ -4,7 +4,8 @@
 #include "Chromosome.h"
 #include "Genetic.h"
 #include "Annealer.h"
-#include "Hillclimber.h"
+#include "HCFI.h"
+#include "HCBI.h"
 #include <fstream>
 
 class Serializer {
@@ -50,15 +51,15 @@ public:
 			break;
 		case HILLCLIMBER_BEST:
 			path = "F:\\licenta\\image_processing\\dna\\hcbi\\" + datetime_s + ".json";
-			solution = HC::curr;
+			solution = HCBI::curr;
 			method_s = "Hillclimbing - Best improvement";
-			time_elapsed = HC::get_running_duration();
+			time_elapsed = HCBI::get_running_duration();
 			break;
 		case HILLCLIMBER_FIRST:
 			path = "F:\\licenta\\image_processing\\dna\\hcfi\\" + datetime_s + ".json";
-			solution = HC::curr;
+			solution = HCFI::curr;
 			method_s = "Hillclimbing - First improvement";
-			time_elapsed = HC::get_running_duration();
+			time_elapsed = HCFI::get_running_duration();
 			break;
 		case ANNEALER:
 			path = "F:\\licenta\\image_processing\\dna\\sa\\" + datetime_s + ".json";

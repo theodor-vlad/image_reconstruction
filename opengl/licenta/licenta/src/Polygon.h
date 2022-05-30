@@ -4,20 +4,17 @@
 #include <vector>
 #include <algorithm>
 
-struct Polygon {
+struct Poly {
 	std::vector<Point> vertices;
 	Point centroid;
 	Color color;
 
-	Polygon() {};
+	Poly() {};
 
-	Polygon(unsigned int n) {
+	Poly(unsigned int n) {
 		for (unsigned int i = 0; i < n; i++)
 			vertices.push_back(Point());
 		calculate_centroid();
-		/*std::sort(vertices.begin(), vertices.end(), [](Point a, Point b) {
-			return a.x * a.x + a.y * a.y < b.x * b.x + b.y * b.y;
-		});*/
 	};
 
 private:
@@ -32,7 +29,7 @@ private:
 		this->centroid = centroid;
 	}
 
-	friend std::ofstream& operator<<(std::ofstream& out, const Polygon& p) {
+	friend std::ofstream& operator<<(std::ofstream& out, const Poly& p) {
 		out << "\t{\n";
 		out << "\t\t\"vertices\": [\n";
 		for (int i = 0; i < p.vertices.size(); i++) {
@@ -47,7 +44,7 @@ private:
 		return out;
 	}
 
-	friend std::ostream& operator<<(std::ostream& out, const Polygon& p) {
+	friend std::ostream& operator<<(std::ostream& out, const Poly& p) {
 		out << "\t{\n";
 		out << "\t\t\"vertices\": [\n";
 		for (int i = 0; i < p.vertices.size(); i++) {
