@@ -165,16 +165,16 @@
     <ClCompile Include="src\Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Deserializer.h" />
-    <ClInclude Include="src\HCBI.h" />
-    <ClInclude Include="src\Serializer.h" />
-    <ClInclude Include="src\Annealer.h" />
-    <ClInclude Include="src\Color.h" />
-    <ClInclude Include="src\Genetic.h" />
-    <ClInclude Include="src\HCFI.h" />
-    <ClInclude Include="src\Point.h" />
-    <ClInclude Include="src\Chromosome.h" />
-    <ClInclude Include="src\Polygon.h" />
+    <ClInclude Include="src\io\Deserializer.h" />
+    <ClInclude Include="src\algorithms\HCBI.h" />
+    <ClInclude Include="src\io\Serializer.h" />
+    <ClInclude Include="src\algorithms\Annealer.h" />
+    <ClInclude Include="src\building_blocks\Color.h" />
+    <ClInclude Include="src\algorithms\Genetic.h" />
+    <ClInclude Include="src\algorithms\HCFI.h" />
+    <ClInclude Include="src\building_blocks\Point.h" />
+    <ClInclude Include="src\building_blocks\Chromosome.h" />
+    <ClInclude Include="src\building_blocks\Polygon.h" />
     <ClInclude Include="src\utils.h" />
   </ItemGroup>
   <ItemGroup>

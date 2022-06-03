@@ -8,43 +8,31 @@
 #include <chrono>
 #include <set>
 #include <iomanip>
-#include "Chromosome.h"
+#include "building_blocks/Chromosome.h"
 #include "omp.h"
 #include <thread>
-#include "HCFI.h"
-#include "HCBI.h"
-#include "Annealer.h"
-#include "Genetic.h"
-#include "Serializer.h"
-#include "Deserializer.h"
+#include "algorithms/HCFI.h"
+#include "algorithms/HCBI.h"
+#include "algorithms/Annealer.h"
+#include "algorithms/Genetic.h"
+#include "io/Serializer.h"
+#include "io/Deserializer.h"
 #include <memory>
 #include <functional>
 #include <Windows.h>
+#include <limits>
 
 std::ifstream fin("licenta\\input.txt");
 
 //---------------------------------------- GLOBALS --------------------------------------------------
-unsigned int mode, method;
-std::string path_to_json, approximation_method, time_elapsed;
-Serializer s;
+unsigned int mode, method, time_elapsed;
+std::string path_to_json, approximation_method;
 Chromosome solution;
+Serializer s;
 
 //--------------------------------------- FUNCTIONS -------------------------------------------------
-//void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-//{
-//    if (key == GLFW_KEY_S && action == GLFW_RELEASE && mode != 1)
-//    {
-//        if (s.serialize()) {
-//            std::cout << "serialized successfully!\n";
-//        }
-//        else {
-//            std::cout << "serialization not successful...\n";
-//        }
-//    }
-//}
-
 void key_pressed(unsigned char key, int x, int y) {
-    if (key == 83 || key == 115) {
+    if (key == 83 || key == 115) { // s
         if (s.serialize()) {
             std::cout << "serialized successfully!\n";
         }
@@ -52,6 +40,10 @@ void key_pressed(unsigned char key, int x, int y) {
             std::cout << "serialization not successful...\n";
         }
     }
+
+    //if (key == 84 || key == 116) { // t
+    //    GA::trigger_hypermutation();
+    //}
 }
 
 void initialize(int argc, char** argv) {
@@ -88,7 +80,7 @@ void initialize(int argc, char** argv) {
     }
 
     glutInitWindowSize(IMG_WIDTH, IMG_HEIGHT + 100);
-    glutInitWindowPosition(100, 100);
+    glutInitWindowPosition(300, 300);
     glutCreateWindow("Image approximation");
     glutKeyboardFunc(key_pressed);
 
@@ -101,7 +93,7 @@ void initialize(int argc, char** argv) {
 void display() {
     solution.draw();
     sprintf(buf, "Polygons: %d", solution.polygons.size());
-    sprintf(buf2, "Fitness: %le", solution.fitness);
+    sprintf(buf2, "Fitness: %.4lf%%", solution.fitness * 100.0);
     sprintf(buf3, "Time elapsed: %ds", time_elapsed);
     float start = 0.93f;
     float diff = 0.065f;
@@ -119,7 +111,7 @@ void idle() {
 //------------------------------------------ MAIN ----------------------------------------------------
 int main(int argc, char** argv)
 {
-    //FreeConsole();
+    FreeConsole();
     initialize(argc, argv);
 
     if (mode == 0) {
@@ -156,6 +148,7 @@ int main(int argc, char** argv)
     }
     else if (mode == 1) {
         solution = Deserializer::reconstruct_solution_from_file(path_to_json);
+        solution.fitness = Deserializer::get_fitness(path_to_json);
         approximation_method = Deserializer::get_approximation_method(path_to_json);
         time_elapsed = Deserializer::get_running_time(path_to_json);
         glutSetWindowTitle(approximation_method.c_str());

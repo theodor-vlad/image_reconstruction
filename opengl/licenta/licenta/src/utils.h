@@ -1,17 +1,25 @@
 #pragma once
 #include <cstdlib>
 #include <random>
+#include <cmath>
 
 #define DIMENSIONS 4U // bgra
 #define EPS 1e-22
-double CX_RATE = 0.25;
+const double INIT_CX_RATE = 0.01;
+const double FINAL_CX_RATE = 0.2;
+const double CX_TEMP = pow(FINAL_CX_RATE / INIT_CX_RATE, 1.0 / 10000.0);
+double CX_RATE = INIT_CX_RATE;
+const double TRIGGERED_HYPERM_RATE = 10.0;
+double M_RATE = 1.0;
+
 double max_y = 2.0 / 3.0;
 
-const int POP_MAX = 50;
-const int POLY_MAX = 300;
-const int POLY_MIN = 50;
-const int POINT_MIN = 3;
-const int POINT_MAX = 10;
+const unsigned int POP_MAX = 50;
+const unsigned int K = 5;
+const unsigned int POLY_MAX = 300;
+const unsigned int POLY_MIN = 50;
+const unsigned int POINT_MIN = 3;
+const unsigned int POINT_MAX = 10;
 
 const unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 std::mt19937_64 rgen(seed);
