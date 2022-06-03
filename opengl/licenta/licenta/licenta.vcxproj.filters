@@ -23,31 +23,34 @@
     <ClInclude Include="src\utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Chromosome.h">
+    <ClInclude Include="src\building_blocks\Chromosome.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Point.h">
+    <ClInclude Include="src\building_blocks\Point.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Color.h">
+    <ClInclude Include="src\building_blocks\Color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Polygon.h">
+    <ClInclude Include="src\building_blocks\Polygon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Genetic.h">
+    <ClInclude Include="src\algorithms\Genetic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hillclimber.h">
+    <ClInclude Include="src\algorithms\HCFI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Annealer.h">
+    <ClInclude Include="src\algorithms\Annealer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Serializer.h">
+    <ClInclude Include="src\io\Serializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Deserializer.h">
+    <ClInclude Include="src\io\Deserializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\algorithms\HCBI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

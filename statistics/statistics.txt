@@ -1,0 +1,28 @@
+-----------------ga-----------------
+min fitness: 0.953807
+max fitness: 0.996153
+avg fitness: 0.9772808
+fitness stdev: 0.015111909666220207
+fitness variance: 0.00022836981375999973
+
+-----------------hcfi-----------------
+min fitness: 0.957742
+max fitness: 0.996498
+avg fitness: 0.9808918
+fitness stdev: 0.013806571861255067
+fitness variance: 0.00019062142656000022
+
+-----------------hcbi-----------------
+min fitness: 0.959587
+max fitness: 0.996498
+avg fitness: 0.9811588
+fitness stdev: 0.01315988388094667
+fitness variance: 0.00017318254376
+
+-----------------sa-----------------
+min fitness: 0.960166
+max fitness: 0.996532
+avg fitness: 0.9815531999999999
+fitness stdev: 0.013074554866610182
+fitness variance: 0.00017094398496
+
