@@ -9,7 +9,7 @@ class Serializer;
 namespace GA {
     std::vector<Chromosome> population, newPopulation, elites, afterCrossover;
     double total_prob, selection_prob, fitness_last_gen;
-    std::vector<double> individual_prob, accumulated_prob;
+    std::vector<double> individual_prob, accumulated_prob, fitness_over_time;
     std::vector<std::pair<unsigned int, double>> crossover_prob;
     unsigned int gen = 0, local_minimum_count = 0, biggest, smallest;
     unsigned int max_stagnated = 0, stagnated_fitness_generations = 0, firstParentIndex, secondParentIndex;
@@ -37,12 +37,15 @@ namespace GA {
 
     void display() {
         population[0].draw();
+
+        unsigned int elapsed_time = get_running_duration();
         sprintf(buf, "Generation: %d", gen);
         sprintf(buf2, "Fitness: %.4lf%%", (1.0 - pow(population[0].fitness, -0.5)) * 100.0);
-        sprintf(buf3, "Time: %ds", get_running_duration());
+        sprintf(buf3, "Time: %ds", elapsed_time);
         sprintf(buf4, "Polygons: %d", population[0].polygons.size());
         sprintf(buf5, "Population count: %d", population.size());
         sprintf(buf6, "Crossover rate: %.4lf%%", CX_RATE * 100.0);
+
         float start = 0.93f;
         float diff = 0.065f;
         float xoff = -0.9f;
@@ -53,6 +56,10 @@ namespace GA {
         drawText(buf5, GLUT_BITMAP_HELVETICA_12, 0.9, 0.9, 0.9, 1.0 + xoff, start);
         drawText(buf6, GLUT_BITMAP_HELVETICA_12, 0.9, 0.9, 0.9, 1.0 + xoff, start - diff);
         glutSwapBuffers();
+
+        if (fitness_over_time.size() < elapsed_time) {
+            fitness_over_time.push_back(population[0].fitness);
+        }
     }
 
 	void idle() {

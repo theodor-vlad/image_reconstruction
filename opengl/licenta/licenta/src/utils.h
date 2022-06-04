@@ -35,20 +35,28 @@ std::uniform_int_distribution<int> rnd4(0, POLY_MAX);
 //#define rnd3 (rnd1/(100*rnd1)) // [-0.01, 0.01]
 //#define rnd4 (int(rnd2*POLY_MAX)) // integer from interval [0, POLY_MAX]
 
-const double PROB_REPLACE_POLY = 0.0000001;
+// chromosome mutation probabilities
+const double PROB_SWAP_TWO_POLYS = 1.0 / 100.0;
+const double PROB_REVERSE_SECTION = 1.0 / 100.0;
+const double PROB_CUT_AND_REARRANGE_SECTIONS = 1.0 / 100.0;
+const double PROB_REPLACE_POLY = 1.0 / 10000000.0;
 const double PROB_ADD_POLY = 1.0 / 3.0;
 const double PROB_REMOVE_POLY = 1.0 / 15.0;
 
-const double PROB_JIGGLE_POINTS = 1.0 / 100.0;
-const double PROB_ADJUST_HUE = 1.0 / 100.0;
+// polygon mutation probabilities
 const double PROB_ADD_POINT = 1.0 / 100.0;
 const double PROB_REMOVE_POINT = 1.0 / 100.0;
-
 const double PROB_TRANSLATE_POLY = 1.0 / 100.0;
 const double PROB_ROTATE_POLY = 1.0 / 100.0;
 const double PROB_SCALE_POLY = 1.0 / 100.0;
 
-const double PROB_TRANSLATE_POINT = 1.0 / 100.0;
+// point mutation probabilities
+const double PROB_TRANSLATE_POINT_MAX = 1.0 / 1000000.0;
+const double PROB_TRANSLATE_POINT_MID = 1.0 / 10000.0;
+const double PROB_TRANSLATE_POINT_MIN = 1.0 / 100.0;
+
+// color mutation probabilities
+const double PROB_ADJUST_HUE = 1.0 / 100.0;
 
 unsigned int num_of_bgra_values;
 unsigned char* targetImgPixels;

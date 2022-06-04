@@ -63,116 +63,45 @@ struct Chromosome {
 			polygons.erase(polygons.begin() + idx);
 		}
 
-		for (auto& poly : polygons) {
+		if (rnd2(rgen) < PROB_SWAP_TWO_POLYS * M_RATE) {
+			int idx1 = rnd2(rgen) * (polygons.size() - 1);
+			int idx2 = rnd2(rgen) * (polygons.size() - 1);
+			std::swap(polygons[idx1], polygons[idx2]);
+		}
 
-			// replace polygon altogether
+		/*if (rnd2(rgen) < PROB_REVERSE_SECTION * M_RATE) {
+			int left = rnd2(rgen) * (polygons.size() - 1);
+			int right = rnd2(rgen) * (polygons.size() - 1);
+			int midpoint = (left + right) / 2;
+			if (left > right) std::swap(left, right);
+			for (int i = left; i <= midpoint; i++)
+				std::swap(polygons[i], polygons[right - i]);
+		}*/
+
+		/*if (rnd2(rgen) < PROB_CUT_AND_REARRANGE_SECTIONS * M_RATE) {
+			int cutpoint = 1 + int(rnd2(rgen) * (polygons.size() - 2));
+			std::vector<Poly> leftSection, rightSection;
+			for (int i = 0; i < cutpoint; i++)
+				leftSection.push_back(polygons[i]);
+			for (int i = cutpoint; i < polygons.size(); i++)
+				rightSection.push_back(polygons[i]);
+			for (int i = 0; i < polygons.size(); i++) {
+				if (i < rightSection.size()) {
+					polygons[i] = rightSection[i];
+				}
+				else {
+					polygons[i] = leftSection[i - rightSection.size()];
+				}
+			}
+		}*/
+
+		for (auto& poly : polygons) {
 			if (rnd2(rgen) < PROB_REPLACE_POLY * M_RATE) {
 				poly = Poly(POINT_MIN);
 			}
-
-			// add point
-			if (poly.vertices.size() <= POINT_MAX && rnd2(rgen) < PROB_ADD_POINT * M_RATE) {
-				int idx = rnd2(rgen) * (poly.vertices.size() - 2);
-				Point prev = poly.vertices[idx];
-				Point next = poly.vertices[idx + 1];
-				Point p = Point(prev.x / 2 + next.x / 2, prev.y / 2 + prev.y / 2);
-				poly.vertices.insert(poly.vertices.begin() + idx + 1, p);
-			}
-
-			// remove point
-			if (poly.vertices.size() > POINT_MIN && rnd2(rgen) < PROB_REMOVE_POINT * M_RATE) {
-				int idx = rnd2(rgen) * (poly.vertices.size() - 1);
-				poly.vertices.erase(poly.vertices.begin() + idx);
-			}
-
-			// adjust points by small, random amount
-			if (rnd2(rgen) < PROB_JIGGLE_POINTS * M_RATE) {
-				for (auto& vertex : poly.vertices) {
-					vertex.x += rnd3(rgen);
-					vertex.y += rnd3(rgen);
-					if (vertex.x < -1.0 || vertex.x > 1.0) vertex.x = rnd1(rgen);
-					if (vertex.y < -1.0 || vertex.y > max_y) vertex.y = rnd0(rgen);
-				}
-			}
-
-			// adjust hue of polygon
-			if (rnd2(rgen) < PROB_ADJUST_HUE * M_RATE) {
-				poly.color.r += 10 * rnd3(rgen);
-				poly.color.g += 10 * rnd3(rgen);
-				poly.color.b += 10 * rnd3(rgen);
-				poly.color.a += 10 * rnd3(rgen);
-				if (poly.color.r < 0.0 || poly.color.r > 1.0) poly.color.r = rnd2(rgen);
-				if (poly.color.g < 0.0 || poly.color.g > 1.0) poly.color.g = rnd2(rgen);
-				if (poly.color.b < 0.0 || poly.color.b > 1.0) poly.color.b = rnd2(rgen);
-				if (poly.color.a < 0.15 || poly.color.a > 0.5) poly.color.a = rnd2(rgen) * 0.35 + 0.15;
-			}
-
-			// translate polygon
-			if (rnd2(rgen) < PROB_TRANSLATE_POLY * M_RATE) {
-				float tx = rnd3(rgen);
-				float ty = rnd3(rgen);
-
-				for (auto& vertex : poly.vertices) {
-					vertex.x += tx;
-					vertex.y += ty;
-
-					// correct point if it is out of bounds
-					if (vertex.x < -1.0 || vertex.x > 1.0) vertex.x = rnd1(rgen);
-					if (vertex.y < -1.0 || vertex.y > max_y) vertex.y = rnd0(rgen);
-				}
-			}
-
-			// rotate polygon around centroid
-			if (rnd2(rgen) < PROB_ROTATE_POLY * M_RATE) {
-				float angle = rnd3(rgen) * 10.0;
-				float s = sin(angle);
-				float c = cos(angle);
-
-				auto centroid = poly.centroid;
-
-				// rotate the vertex about its centroid
-				for (auto& vertex : poly.vertices) {
-					// translate point back to origin
-					vertex.x -= centroid.x;
-					vertex.y -= centroid.y;
-
-					// rotate point & translate point back
-					vertex.x = vertex.x * c - vertex.y * s + centroid.x;
-					vertex.y = vertex.x * s + vertex.y * c + centroid.y;
-
-					// correct point if it is out of bounds
-					if (vertex.x < -1.0 || vertex.x > 1.0) vertex.x = rnd1(rgen);
-					if (vertex.y < -1.0 || vertex.y > max_y) vertex.y = rnd0(rgen);
-				}
-			}
-
-			// scale polygon
-			if (rnd2(rgen) < PROB_SCALE_POLY * M_RATE) {
-				float factor = rnd2(rgen) + 0.5;
-
-				Point centroid_before = poly.centroid;
-				for (auto& vertex : poly.vertices) {
-					vertex.x *= factor;
-					vertex.y *= factor;
-				}
-				Point centroid_after = poly.centroid;
-
-				float offset_x = centroid_before.x - centroid_after.x;
-				float offset_y = centroid_before.y - centroid_after.y;
-
-				for (auto& vertex : poly.vertices) {
-					vertex.x += offset_x;
-					vertex.y += offset_y;
-
-					// correct point if it is out of bounds
-					if (vertex.x < -1.0 || vertex.x > 1.0) vertex.x = rnd1(rgen);
-					if (vertex.y < -1.0 || vertex.y > max_y) vertex.y = rnd0(rgen);
-				}
-			}
-
-			// no matter how it changed, this chromosome should be re-evaluated
-			should_update_fitness = true;
+			poly.mutate();
 		}
+		should_update_fitness = true;
 	}
 
 	std::pair<Chromosome, Chromosome> cut_and_splice(const Chromosome& other) {

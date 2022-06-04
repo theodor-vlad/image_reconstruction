@@ -75,32 +75,37 @@ public:
 		std::string image_name = tokenize_and_return_image_name(path_to_image);
 		Chromosome solution;
 		long long time_elapsed;
+		std::vector<double> fitness_over_time;
 
 		switch (algorithm)
 		{
 		case GENETIC:
-			path = "F:\\licenta\\image_processing\\dna\\ga\\" + image_name + "_" + datetime_s + ".json";
+			path = "..\\..\\output\\dna\\ga\\" + image_name + "_" + datetime_s + ".json";
 			solution = GA::population[0];
 			method_s = "Genetic Algorithm";
 			time_elapsed = GA::get_running_duration();
+			fitness_over_time = GA::fitness_over_time;
 			break;
 		case HILLCLIMBER_BEST:
-			path = "F:\\licenta\\image_processing\\dna\\hcbi\\" + image_name + "_" + datetime_s + ".json";
+			path = "..\\..\\output\\dna\\hcbi\\" + image_name + "_" + datetime_s + ".json";
 			solution = HCBI::curr;
 			method_s = "Hillclimbing - Best improvement";
 			time_elapsed = HCBI::get_running_duration();
+			fitness_over_time = HCBI::fitness_over_time;
 			break;
 		case HILLCLIMBER_FIRST:
-			path = "F:\\licenta\\image_processing\\dna\\hcfi\\" + image_name + "_" + datetime_s + ".json";
+			path = "..\\..\\output\\dna\\hcfi\\" + image_name + "_" + datetime_s + ".json";
 			solution = HCFI::curr;
 			method_s = "Hillclimbing - First improvement";
 			time_elapsed = HCFI::get_running_duration();
+			fitness_over_time = HCFI::fitness_over_time;
 			break;
 		case ANNEALER:
-			path = "F:\\licenta\\image_processing\\dna\\sa\\" + image_name + "_" + datetime_s + ".json";
+			path = "..\\..\\output\\dna\\sa\\" + image_name + "_" + datetime_s + ".json";
 			solution = SA::curr;
 			method_s = "Simulated Annealing";
 			time_elapsed = SA::get_running_duration();
+			fitness_over_time = SA::fitness_over_time;
 			break;
 		default:
 			result = false;
@@ -115,6 +120,17 @@ public:
 			outfile << "\"approximation_method\": \"" << method_s << "\",\n";
 			outfile << "\"time_elapsed\": " << time_elapsed << ",\n";
 			outfile << "\"fitness\": " << 1.0 - pow(solution.fitness, -0.5) << ",\n";
+
+			outfile << "\"fitness_over_time\": " << "[\n";
+			for (int i = 0; i < fitness_over_time.size(); i++) {
+				outfile << "\t[" << i + 1 << ", " << fitness_over_time[i] << ']';
+				if (i != fitness_over_time.size() - 1) {
+					outfile << ',';
+				}
+				outfile << '\n';
+			}
+
+			outfile << "],\n";
 			outfile << "\"chromosome\": ";
 			outfile << solution;
 			outfile << "\n}";

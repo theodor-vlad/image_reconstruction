@@ -2,10 +2,10 @@ import json
 import os
 import numpy as np
 
-with open('statistics.txt', 'w+') as output:
+with open('../output/statistics.txt', 'w+') as output:
     for algorithm in ['ga', 'hcfi', 'hcbi', 'sa']:
         fitnesses = []
-        d = '../image_processing/dna/' + algorithm + '/'
+        d = '../output/dna/' + algorithm + '/'
         for filename in os.listdir(d):
             full_path = os.path.join(d, filename)
             if os.path.isfile(full_path) and full_path.split('.')[-1] == 'json':
