@@ -13,14 +13,14 @@ namespace SA {
     std::vector<double> fitness_over_time;
 
     void init() {
-        curr = Chromosome(POLY_MAX / 2);
+        curr = Chromosome(POLY_MAX / 2 + POLY_MIN / 2);
 
         double avg_temp = 0.0;
         for (int i = 0; i < 100; i++) {
-            Chromosome randomChromo(POLY_MAX / 2);
+            Chromosome randomChromo(POLY_MAX);
             avg_temp += randomChromo.fitness;
         }
-        T = avg_temp / 5000.0;
+        T = avg_temp / 2500.0;
 
         gen = 0;
         begin = std::chrono::steady_clock::now();
@@ -70,7 +70,7 @@ namespace SA {
 
         if (neighbours_visited % 100 == 0) {
             gen++;
-            T *= 0.999;
+            T *= 0.997;
             neighbours_visited = 0;
         }
 

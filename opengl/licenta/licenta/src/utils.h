@@ -37,11 +37,9 @@ std::uniform_int_distribution<int> rnd4(0, POLY_MAX);
 
 // chromosome mutation probabilities
 const double PROB_SWAP_TWO_POLYS = 1.0 / 100.0;
-const double PROB_REVERSE_SECTION = 1.0 / 100.0;
-const double PROB_CUT_AND_REARRANGE_SECTIONS = 1.0 / 100.0;
 const double PROB_REPLACE_POLY = 1.0 / 10000000.0;
-const double PROB_ADD_POLY = 1.0 / 3.0;
-const double PROB_REMOVE_POLY = 1.0 / 15.0;
+const double PROB_ADD_POLY = 1.0 / 10.0;
+const double PROB_REMOVE_POLY = 1.0 / 25.0;
 
 // polygon mutation probabilities
 const double PROB_ADD_POINT = 1.0 / 100.0;

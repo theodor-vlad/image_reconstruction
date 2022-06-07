@@ -13,7 +13,7 @@ namespace HCBI {
     std::vector<double> fitness_over_time;
 
     void init() {
-        curr = Chromosome(POLY_MAX / 2);
+        curr = Chromosome(POLY_MAX / 2 + POLY_MIN / 2);
         best_next = curr;
         best_next.fitness = curr.fitness;
         begin = std::chrono::steady_clock::now();

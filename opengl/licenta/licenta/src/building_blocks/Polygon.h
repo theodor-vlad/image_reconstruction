@@ -38,12 +38,14 @@ public:
 			Point next = vertices[idx + 1];
 			Point p = Point(prev.x / 2 + next.x / 2, prev.y / 2 + prev.y / 2);
 			vertices.insert(vertices.begin() + idx + 1, p);
+			calculate_centroid();
 		}
 
 		// remove point
 		if (vertices.size() > POINT_MIN && rnd2(rgen) < PROB_REMOVE_POINT * M_RATE) {
 			int idx = rnd2(rgen) * (vertices.size() - 1);
 			vertices.erase(vertices.begin() + idx);
+			calculate_centroid();
 		}
 
 		//// adjust points by small, random amount
@@ -73,7 +75,7 @@ public:
 
 		// rotate polygon around centroid
 		if (rnd2(rgen) < PROB_ROTATE_POLY * M_RATE) {
-			float angle = rnd3(rgen) * 10.0;
+			float angle = rnd3(rgen) * 50.0;
 			float s = sin(angle);
 			float c = cos(angle);
 

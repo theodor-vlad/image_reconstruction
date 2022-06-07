@@ -13,7 +13,7 @@ namespace HCFI {
     std::vector<double> fitness_over_time;
 
     void init() {
-        curr = Chromosome(POLY_MAX / 2);
+        curr = Chromosome(POLY_MAX / 2 + POLY_MIN / 2);
         begin = std::chrono::steady_clock::now();
     }
 
