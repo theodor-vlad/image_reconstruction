@@ -1,28 +1,16 @@
------------------ga-----------------
-min fitness: 0.953807
-max fitness: 0.996153
-avg fitness: 0.9772808
-fitness stdev: 0.015111909666220207
-fitness variance: 0.00022836981375999973
-
 -----------------hcfi-----------------
-min fitness: 0.957742
-max fitness: 0.996498
-avg fitness: 0.9808918
-fitness stdev: 0.013806571861255067
-fitness variance: 0.00019062142656000022
-
------------------hcbi-----------------
-min fitness: 0.959587
-max fitness: 0.996498
-avg fitness: 0.9811588
-fitness stdev: 0.01315988388094667
-fitness variance: 0.00017318254376
+sample size: 30
+min fitness: 0.966387
+max fitness: 0.998844
+avg fitness: 0.9892955
+fitness stdev: 0.007879647186475627
+fitness variance: 6.208883978333327e-05
 
 -----------------sa-----------------
-min fitness: 0.960166
-max fitness: 0.996532
-avg fitness: 0.9815531999999999
-fitness stdev: 0.013074554866610182
-fitness variance: 0.00017094398496
+sample size: 30
+min fitness: 0.967368
+max fitness: 0.998802
+avg fitness: 0.9895764333333333
+fitness stdev: 0.007641300311174496
+fitness variance: 5.8389470445555456e-05
 
