@@ -27,6 +27,10 @@ with open('../output/statistics.txt', 'w+') as output:
             for i in range(1800):
                 fitnesses_over_time[algo_index][i] /= len(fitnesses)
 
+            seconds_to_hit_96 = next(i for i, x in enumerate(fitnesses_over_time[algo_index]) if (1.0 - x ** (-0.5) >= 0.96))
+            seconds_to_hit_97 = next(i for i, x in enumerate(fitnesses_over_time[algo_index]) if (1.0 - x ** (-0.5) >= 0.97))
+            seconds_to_hit_98 = next(i for i, x in enumerate(fitnesses_over_time[algo_index]) if (1.0 - x ** (-0.5) >= 0.98))
+
             with open('../output/' + algorithm + '_fitness_over_time.txt', 'w+') as algorithm_fitness_over_time:
                 for i in range(1800):
                     algorithm_fitness_over_time.write(f'({i + 1}, ' + format(fitnesses_over_time[algo_index][i], '.4f') + ')\n')
@@ -37,5 +41,8 @@ with open('../output/statistics.txt', 'w+') as output:
             output.write(f'max fitness: {np.max(fitnesses)}\n')
             output.write(f'avg fitness: {np.average(fitnesses)}\n')
             output.write(f'fitness stdev: {np.std(fitnesses)}\n')
-            output.write(f'fitness variance: {np.var(fitnesses)}\n\n')
+            output.write(f'fitness variance: {np.var(fitnesses)}\n')
+            output.write(f'average time to hit 96% likeness: {seconds_to_hit_96}s\n')
+            output.write(f'average time to hit 97% likeness: {seconds_to_hit_97}s\n')
+            output.write(f'average time to hit 98% likeness: {seconds_to_hit_98}s\n\n')
 
