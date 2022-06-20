@@ -40,10 +40,6 @@ void key_pressed(unsigned char key, int x, int y) {
             std::cout << "serialization not successful...\n";
         }
     }
-
-    //if (key == 84 || key == 116) { // t
-    //    GA::trigger_hypermutation();
-    //}
 }
 
 void initialize(int argc, char** argv) {
@@ -90,6 +86,8 @@ void initialize(int argc, char** argv) {
     s.set_algortihm(Serializer::algorithm_t(method));
 }
 
+// adapted from Dr. Karoly Zsolnai-Feher's implementation
+// source: https://users.cg.tuwien.ac.at/zsolnai/gfx/mona_lisa_parallel_genetic_algorithm/
 void display() {
     solution.draw();
     sprintf(buf, "Polygons: %d", solution.polygons.size());

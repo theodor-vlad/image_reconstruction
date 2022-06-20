@@ -29,12 +29,6 @@ std::uniform_real_distribution<double> rnd2(0.0, 1.0);
 std::uniform_real_distribution<double> rnd3(-0.01, 0.01);
 std::uniform_int_distribution<int> rnd4(0, POLY_MAX);
 
-//#define rnd0 (((double)rand()/RAND_MAX) * (max_y + 1.0) - 1.0) // [-1.0, max_y]
-//#define rnd1 (2.0*(double)rand()/RAND_MAX-1.0) // [-1.0, 1.0]
-//#define rnd2 ((double)rand()/RAND_MAX) // [0.0, 1.0]
-//#define rnd3 (rnd1/(100*rnd1)) // [-0.01, 0.01]
-//#define rnd4 (int(rnd2*POLY_MAX)) // integer from interval [0, POLY_MAX]
-
 // chromosome mutation probabilities
 const double PROB_SWAP_TWO_POLYS = 1.0 / 100.0;
 const double PROB_REPLACE_POLY = 1.0 / 10000000.0;
@@ -62,8 +56,9 @@ unsigned char* currChromoPixels;
 unsigned int IMG_WIDTH, IMG_HEIGHT;
 std::string path_to_image;
 
+// adapted from Dr. Karoly Zsolnai-Feher's implementation
+// source: https://users.cg.tuwien.ac.at/zsolnai/gfx/mona_lisa_parallel_genetic_algorithm/
 char buf[128], buf2[128], buf3[128], buf4[128], buf5[128], buf6[128];
-
 void drawText(char* str, void* font, GLclampf r, GLclampf g, GLclampf b, GLfloat x, GLfloat y) {
 	char* ch;
 	glMatrixMode(GL_PROJECTION);

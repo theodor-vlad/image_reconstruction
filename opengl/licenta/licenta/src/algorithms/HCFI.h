@@ -21,6 +21,8 @@ namespace HCFI {
         return std::chrono::duration_cast<std::chrono::seconds>(end - begin).count();
     }
 
+    // adapted from Dr. Karoly Zsolnai-Feher's implementation
+    // source: https://users.cg.tuwien.ac.at/zsolnai/gfx/mona_lisa_parallel_genetic_algorithm/
     void display() {
         curr.draw();
 

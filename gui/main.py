@@ -11,11 +11,13 @@ filename = "../image_processing/sources/caragiale1.jpg"
 mode = 0
 approximation_method = 2
 DESIRED_HEIGHT = 500
+welcome_text = """If you wish to recreate an image, save it in a .JPG format, then select it from here 
+    along with an approximation method. If you want to display an already generated solution, select 
+    the .JSON file corresponding to it. When you are done with either selection, click on the \"Run\" button."""
 
 # functions
 def browseFiles():
-    global filename
-    global mode
+    global filename, mode, label, button_run
     filename = filedialog.askopenfilename(
         initialdir = "/",
         title = "Select a File",
@@ -24,6 +26,12 @@ def browseFiles():
             ("Solution DNAs (.json files)", "*.json*")
         )
     )
+
+    # error checking
+    if '' == filename:
+        label.config(text=welcome_text + '\nNo file selected!')
+    else:
+        label.config(text=welcome_text + f'\nFile selected: {filename}')
 
     def changeLabelImage(path_to_image):
         img = Image.open(path_to_image)
@@ -42,6 +50,11 @@ def browseFiles():
         changeLabelImage(dna['path_to_image'])
 
 def approximate_or_render():
+    # error checking
+    global label
+    if '' == filename:
+        return
+
     # other python script
     subprocess.run([
         'python3',  # version of python interpreter used
@@ -64,15 +77,13 @@ def approximation_method_callback(selection):
 # main
 root = Tk()
 root.title('Image approximator')
-root.geometry("700x625")
+root.geometry("700x650")
 root.config(background = "white")
 
 # info label
 label = Label(
     root,
-    text = """If you wish to recreate an image, save it in a .JPG format, then select it from here 
-    along with an approximation method. If you want to display an already generated solution, select 
-    the .JSON file corresponding to it. When you are done with either selection, click on the \"Run\" button.""",
+    text = welcome_text,
     width = 100,
     pady=5
 )

@@ -1,4 +1,3 @@
-import os
 import sys
 from PIL import Image
 
@@ -29,5 +28,3 @@ with open("../opengl/licenta/licenta/input.txt", "w") as f:
         
         for r, g, b in reversed(pixels):
             f.write(f'{b} {g} {r}\n')
-        
-        

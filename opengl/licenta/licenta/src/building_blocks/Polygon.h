@@ -48,16 +48,6 @@ public:
 			calculate_centroid();
 		}
 
-		//// adjust points by small, random amount
-		//if (rnd2(rgen) < PROB_JIGGLE_POINTS * M_RATE) {
-		//	for (auto& vertex : vertices) {
-		//		vertex.x += rnd3(rgen);
-		//		vertex.y += rnd3(rgen);
-		//		if (vertex.x < -1.0 || vertex.x > 1.0) vertex.x = rnd1(rgen);
-		//		if (vertex.y < -1.0 || vertex.y > max_y) vertex.y = rnd0(rgen);
-		//	}
-		//}
-
 		// translate polygon
 		if (rnd2(rgen) < PROB_TRANSLATE_POLY * M_RATE) {
 			float tx = rnd3(rgen);
@@ -74,6 +64,7 @@ public:
 		}
 
 		// rotate polygon around centroid
+		// source: https://stackoverflow.com/questions/2259476/rotating-a-point-about-another-point-2d
 		if (rnd2(rgen) < PROB_ROTATE_POLY * M_RATE) {
 			float angle = rnd3(rgen) * 50.0;
 			float s = sin(angle);
@@ -99,25 +90,25 @@ public:
 		if (rnd2(rgen) < PROB_SCALE_POLY * M_RATE) {
 			float factor = rnd2(rgen) + 0.5;
 
+			// translate polygon so that the centroid sits in the origin
 			Point centroid_before = centroid;
 			for (auto& vertex : vertices) {
-				vertex.x *= factor;
-				vertex.y *= factor;
+				vertex.x -= centroid_before.x;
+				vertex.y -= centroid_before.y;
 			}
-			calculate_centroid();
-			Point centroid_after = centroid;
 
-			float offset_x = centroid_before.x - centroid_after.x;
-			float offset_y = centroid_before.y - centroid_after.y;
-
+			// scale polygon and translate back
 			for (auto& vertex : vertices) {
-				vertex.x += offset_x;
-				vertex.y += offset_y;
+				vertex.x = vertex.x * factor + centroid_before.x;
+				vertex.y = vertex.y * factor + centroid_before.y;
 
 				// correct point if it is out of bounds
 				if (vertex.x < -1.0 || vertex.x > 1.0) vertex.x = rnd1(rgen);
 				if (vertex.y < -1.0 || vertex.y > max_y) vertex.y = rnd0(rgen);
 			}
+
+			// recalculate centroid (should be the same but for good measure)
+			calculate_centroid();
 		}
 
 		for (auto& vertex : vertices) vertex.mutate();

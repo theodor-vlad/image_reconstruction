@@ -42,6 +42,8 @@ struct Chromosome {
 		// calculate pixel-by-pixel 3d distance between capture and target image and update fitness
 		double fit = 0.0;
 
+		// heavily inspired by Dr. Karoly Zsolnai-Feher's implementation
+		// source: https://users.cg.tuwien.ac.at/zsolnai/gfx/mona_lisa_parallel_genetic_algorithm/
 		#pragma omp parallel for schedule(guided, 1024) reduction(+:fit)
 		for (int i = 0; i < num_of_bgra_values; i += 4) {
 			fit += (double(currChromoPixels[i]) - double(targetImgPixels[i])) * (double(currChromoPixels[i]) - double(targetImgPixels[i]));
@@ -68,32 +70,6 @@ struct Chromosome {
 			int idx2 = rnd2(rgen) * (polygons.size() - 1);
 			std::swap(polygons[idx1], polygons[idx2]);
 		}
-
-		/*if (rnd2(rgen) < PROB_REVERSE_SECTION * M_RATE) {
-			int left = rnd2(rgen) * (polygons.size() - 1);
-			int right = rnd2(rgen) * (polygons.size() - 1);
-			int midpoint = (left + right) / 2;
-			if (left > right) std::swap(left, right);
-			for (int i = left; i <= midpoint; i++)
-				std::swap(polygons[i], polygons[right - i]);
-		}*/
-
-		/*if (rnd2(rgen) < PROB_CUT_AND_REARRANGE_SECTIONS * M_RATE) {
-			int cutpoint = 1 + int(rnd2(rgen) * (polygons.size() - 2));
-			std::vector<Poly> leftSection, rightSection;
-			for (int i = 0; i < cutpoint; i++)
-				leftSection.push_back(polygons[i]);
-			for (int i = cutpoint; i < polygons.size(); i++)
-				rightSection.push_back(polygons[i]);
-			for (int i = 0; i < polygons.size(); i++) {
-				if (i < rightSection.size()) {
-					polygons[i] = rightSection[i];
-				}
-				else {
-					polygons[i] = leftSection[i - rightSection.size()];
-				}
-			}
-		}*/
 
 		for (auto& poly : polygons) {
 			if (rnd2(rgen) < PROB_REPLACE_POLY * M_RATE) {

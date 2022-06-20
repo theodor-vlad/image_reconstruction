@@ -1,3 +1,14 @@
+-----------------ga-----------------
+sample size: 30
+min fitness: 0.949921
+max fitness: 0.998035
+avg fitness: 0.9849294666666667
+fitness stdev: 0.011308985809916329
+fitness variance: 0.00012789316004888887
+average time to hit 96% likeness: 12s
+average time to hit 97% likeness: 27s
+average time to hit 98% likeness: 75s
+
 -----------------hcfi-----------------
 sample size: 30
 min fitness: 0.966387

@@ -35,6 +35,8 @@ namespace GA {
         stagnated_fitness_generations = 0;
     }
 
+    // adapted from Dr. Karoly Zsolnai-Feher's implementation
+    // source: https://users.cg.tuwien.ac.at/zsolnai/gfx/mona_lisa_parallel_genetic_algorithm/
     void display() {
         population[0].draw();
 
@@ -155,22 +157,6 @@ namespace GA {
         std::sort(crossover_prob.begin(), crossover_prob.end(), [](std::pair<unsigned, double> p1, std::pair<unsigned, double> p2) {
             return p1.second < p2.second;
         });
-
-        //// ORDER CROSSOVER - USE WITH FIXED SIZE INDIVIDUALS
-        //for (unsigned i = 0; i < population.size() - 1 && crossover_prob[i].second < CX_RATE; i += 2)
-        //{
-        //    // parents chosen for crossover
-        //    unsigned firstParentIndex = crossover_prob[i].first;
-        //    unsigned secondParentIndex = crossover_prob[i + 1].first;
-        //    auto firstParent = population[firstParentIndex];
-        //    auto secondParent = population[secondParentIndex];
-
-        //    // determine the cutpoint
-        //    unsigned int cutpoint = rnd4(rgen);
-
-        //    // cross the parents over using order, single-cutpoint crossover, then override the parents
-        //    std::tie(population[firstParentIndex], population[secondParentIndex]) = firstParent.order_crossover(secondParent, cutpoint);
-        //}
 
         // CUT AND SPLICE CROSSOVER - USE WITH MESSY INDIVIDUALS
         for (unsigned i = 0; i < population.size() - 1 && crossover_prob[i].second < CX_RATE; i += 2)

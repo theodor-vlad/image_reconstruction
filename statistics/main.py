@@ -45,4 +45,3 @@ with open('../output/statistics.txt', 'w+') as output:
             output.write(f'average time to hit 96% likeness: {seconds_to_hit_96}s\n')
             output.write(f'average time to hit 97% likeness: {seconds_to_hit_97}s\n')
             output.write(f'average time to hit 98% likeness: {seconds_to_hit_98}s\n\n')
-

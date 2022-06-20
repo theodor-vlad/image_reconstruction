@@ -20,7 +20,7 @@ namespace SA {
             Chromosome randomChromo(POLY_MAX);
             avg_temp += randomChromo.fitness;
         }
-        T = avg_temp / 2500.0;
+        T = avg_temp / 1000.0;
 
         gen = 0;
         begin = std::chrono::steady_clock::now();
@@ -30,6 +30,8 @@ namespace SA {
         return std::chrono::duration_cast<std::chrono::seconds>(end - begin).count();
     }
 
+    // adapted from Dr. Karoly Zsolnai-Feher's implementation
+    // source: https://users.cg.tuwien.ac.at/zsolnai/gfx/mona_lisa_parallel_genetic_algorithm/
     void display() {
         curr.draw();
 
