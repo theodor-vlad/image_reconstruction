@@ -7,7 +7,7 @@ import subprocess
 import json
 
 # globals
-filename = "../image_processing/sources/caragiale1.jpg"
+filename = "../image_processing/sources/mona_face.jpg"
 mode = 0
 approximation_method = 2
 DESIRED_HEIGHT = 500

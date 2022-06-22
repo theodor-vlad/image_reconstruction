@@ -3,7 +3,7 @@ from PIL import Image
 
 DESIRED_HEIGHT = 500
 
-with open("../opengl/licenta/licenta/input.txt", "w") as f:
+with open("../opengl/licenta/licenta/input.txt", "w+") as f:
 
     f.write(f'{sys.argv[1]}\n')
 
