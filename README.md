@@ -11,6 +11,8 @@
 ![ezgif-5-b3a4374e8e](https://user-images.githubusercontent.com/22328874/228052162-8a1b511f-c3c8-4348-bd0a-6e053755712b.gif)
 
 
+The results of this project were accepted and presented during the **24th International Symposium on Symbolic and Numeric Algorithms for Scientific Computing** (SYNASC 2022 - Austria), the paper being available at [this link](paper.pdf) (currently the paper is viewable by conference participants only; will update with IEEE Xplore link once the paper is published).
+
 ## How to run (Windows only):
 
 1. Install python3.9 for Windows
