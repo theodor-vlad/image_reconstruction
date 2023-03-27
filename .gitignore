@@ -5,6 +5,12 @@
 /opengl/licenta/licenta/Debug/
 /opengl/licenta/.vs/
 /opengl/licenta/licenta/pixels.txt
+/opengl/licenta/licenta/input.txt
 /gui/prelucrating.txt
 /prelucrare/
 /image_processing/sources/_resized/
+/image_processing/sources/*
+!/image_processing/sources/mona_lisa.jpg
+/output/*
+/output/dna/*
+licenta.zip

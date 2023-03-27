@@ -20,7 +20,7 @@ namespace SA {
             Chromosome randomChromo(POLY_MAX);
             avg_temp += randomChromo.fitness;
         }
-        T = avg_temp / 1000.0;
+        T = avg_temp / 250.0;
 
         gen = 0;
         begin = std::chrono::steady_clock::now();
