@@ -22,7 +22,3 @@ The results of this project were accepted and presented during the **24th Intern
 1. Open command prompt from `gui` folder: `python3 main.py`
 1. Choose the image you want reconstructed from polygons, then click on `Run`
 1. Wait cca. 30-45 mins for good results
-
-## Image sources & results
-
-Image sources and results can be found at [this](https://drive.google.com/file/d/1WJeOlV87-u1zFXFAfehSBB9l2slt4PJO/view?usp=sharing) link.
